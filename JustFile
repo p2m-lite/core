@@ -1,2 +1,19 @@
-demo:
-  echo "Demo Task"
+set windows-shell := ["powershell.exe", "-NoLogo", "-Command"]
+
+[unix]
+[working-directory:"contract"]
+compile:
+  rm -rf temp/ build/
+  solc --bin --abi --optimize --overwrite P2M.sol -o temp/
+  mkdir -p build/
+  mv temp/P2M.* build/
+  rm -rf temp/
+
+[windows]
+[working-directory:"contract"]
+compile:
+  'temp','build' | % { if (Test-Path $_) { Remove-Item -Recurse -Force $_ } }
+  solc --bin --abi --optimize --overwrite P2M.sol -o temp
+  New-Item -ItemType Directory -Force -Path build | Out-Null
+  Move-Item temp\P2M.* build
+  Remove-Item -Recurse -Force temp
