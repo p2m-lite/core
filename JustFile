@@ -1,22 +1,45 @@
 set windows-shell := ["powershell.exe", "-NoLogo", "-Command"]
+contract_dir := "./api/internals/contract"
+
+# Convention:
+# 1. Recipe names starting and ending with underscore (_)
+#    are meant to be "private" and should not be called directly.
+
+[no-cd]
+[unix]
+_create_dirs_ path:
+  mkdir -p {{path}}
+
+[no-cd]
+[windows]
+_create_dirs_ path:
+  [System.IO.Directory]::CreateDirectory("{{path}}")
+
+_genabi_:
+  just _create_dirs_ {{contract_dir}}
+  abigen --abi ./contract/build/P2M.abi --pkg contract --type P2MContract --out {{contract_dir}}/p2m_contract.go
 
 [unix]
 [working-directory:"contract"]
 compile:
   rm -rf temp/ build/
   solc --bin --abi --optimize --overwrite P2M.sol -o temp/
-  mkdir -p build/
+  just _create_dirs_ build
   mv temp/P2M.* build/
   rm -rf temp/
+  just _genabi_
 
 [windows]
 [working-directory:"contract"]
 compile:
   'temp','build' | % { if (Test-Path $_) { Remove-Item -Recurse -Force $_ } }
   solc --bin --abi --optimize --overwrite P2M.sol -o temp
-  New-Item -ItemType Directory -Force -Path build | Out-Null
+  just _create_dirs_ build
   Move-Item temp\P2M.* build
   Remove-Item -Recurse -Force temp
+  just _genabi_
+
+genabi: compile _genabi_
 
 [working-directory:"ignite"]
 deploy: compile
