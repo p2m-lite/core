@@ -14,6 +14,8 @@ contract Log {
   event LogStored(address indexed recorder, uint256 phValue, uint256 turbidity, uint256 timestamp);
 
   function storeLog(uint256 _phValue, uint256 _turbidity) public {
+    require(_phValue >= 0 && _phValue <= 14, "pH value must be between 0 and 14");
+    require(_turbidity >= 0, "Turbidity must be non-negative");
     WaterLog memory newLog = WaterLog({
       recorder: msg.sender,
       phValue: _phValue,
