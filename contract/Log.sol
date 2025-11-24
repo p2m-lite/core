@@ -23,8 +23,8 @@ contract Log {
       timestamp: block.timestamp
     });
 
-    emit LogStored(msg.sender, _phValue, _turbidity, block.timestamp);
     waterLogs.push(newLog);
+    emit LogStored(msg.sender, _phValue, _turbidity, block.timestamp);
   }
 
   function getLogCount() public view returns (uint256) {
