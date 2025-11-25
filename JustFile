@@ -1,5 +1,6 @@
 set windows-shell := ["powershell.exe", "-NoLogo", "-Command"]
-contract_dir := "./api/internals/contract"
+daemon_contract_dir := "./daemon/internal/contract"
+api_contract_dir := "./api/internal/contract"
 
 # Convention:
 # 1. Recipe names starting and ending with underscore (_)
@@ -16,8 +17,10 @@ _create_dirs_ path:
   [System.IO.Directory]::CreateDirectory("{{path}}")
 
 _genabi_:
-  just _create_dirs_ {{contract_dir}}
-  abigen --abi ./contract/build/P2M.abi --pkg contract --type P2MContract --out {{contract_dir}}/p2m_contract.go
+  just _create_dirs_ {{api_contract_dir}}
+  just _create_dirs_ {{daemon_contract_dir}}
+  abigen --abi ./contract/build/P2M.abi --pkg contract --type P2MContract --out {{api_contract_dir}}/p2m_contract.go
+  cp {{api_contract_dir}}/p2m_contract.go {{daemon_contract_dir}}/p2m_contract.go
 
 [unix]
 [working-directory:"contract"]
