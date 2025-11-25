@@ -1,3 +1,4 @@
 .env
+*.exe
 client-test
-api/internals/contract/
+*/internal/contract/
