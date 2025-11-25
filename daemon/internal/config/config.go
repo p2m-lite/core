@@ -16,19 +16,19 @@ func Load() (*Config, error) {
 	// Load .env file if it exists
 	_ = godotenv.Load()
 
-	baseURL := os.Getenv("BASE_URL")
-	if baseURL == "" {
-		baseURL = "http://localhost:8080" // Default
+	apiURL := os.Getenv("API_URL")
+	if apiURL == "" {
+		apiURL = "http://localhost:8080" // Default
 	}
 
 	// Simple check to remove trailing slash if present to avoid double slashes
-	if len(baseURL) > 0 && baseURL[len(baseURL)-1] == '/' {
-		baseURL = baseURL[:len(baseURL)-1]
+	if len(apiURL) > 0 && apiURL[len(apiURL)-1] == '/' {
+		apiURL = apiURL[:len(apiURL)-1]
 	}
 
 	return &Config{
 		ContractAddress: os.Getenv("CONTRACT_ADDRESS"),
-		AuthURL:   baseURL + "/auth/initiate",
-		VerifyURL: baseURL + "/auth/verify",
+		AuthURL:   apiURL + "/auth/initiate",
+		VerifyURL: apiURL + "/auth/verify",
 	}, nil
 }
