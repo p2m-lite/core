@@ -16,6 +16,7 @@ func SendLog(cAddr string, key *ecdsa.PrivateKey, ph, turbidity int) error {
 	if cErr != nil {
 		return cErr
 	}
+	defer client.Close()
 
 	chainID, nErr := client.NetworkID(context.Background())
 	if nErr != nil {
