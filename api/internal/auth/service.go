@@ -12,7 +12,7 @@ import (
 	"time"
 
 	"p2m-lite/config"
-	"p2m-lite/database"
+	"p2m-lite/internal/database"
 	"p2m-lite/internal/utils"
 
 	"github.com/ethereum/go-ethereum/crypto"
@@ -20,10 +20,10 @@ import (
 
 type AuthService struct {
 	cfg *config.Config
-	db  *database.MockDB
+	db  *database.Store
 }
 
-func NewService(cfg *config.Config, db *database.MockDB) *AuthService {
+func NewService(cfg *config.Config, db *database.Store) *AuthService {
 	return &AuthService{
 		cfg: cfg,
 		db:  db,

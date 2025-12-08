@@ -47,3 +47,11 @@ genabi: compile _genabi_
 [working-directory:"ignite"]
 deploy: compile
   go run .
+
+[working-directory:"daemon"]
+daemon:
+  go run ./cmd
+
+[working-directory:"api"]
+api:
+  go run ./cmd

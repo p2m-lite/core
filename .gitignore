@@ -2,3 +2,4 @@
 *.exe
 client-test
 */internal/contract/
+*.db

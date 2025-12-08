@@ -19,6 +19,8 @@ type Config struct {
 	SecretTTL       int
 	BlockchainURL   string
 	ContractAddress string
+	BrevoAPIKey     string
+	PrivateKey      string
 }
 
 func LoadConfig() *Config {
@@ -32,6 +34,8 @@ func LoadConfig() *Config {
 		SecretTTL:       DefaultSecretTTL,
 		BlockchainURL:   os.Getenv("BLOCKCHAIN_URL"),
 		ContractAddress: os.Getenv("CONTRACT_ADDRESS"),
+		BrevoAPIKey:     os.Getenv("BREVO_API_KEY"),
+		PrivateKey:      os.Getenv("PRIVATE_KEY"),
 	}
 
 	if appConfig.AppSecret == "" {
